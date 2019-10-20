@@ -9,7 +9,7 @@ module.exports = (env, argv) => ({
   devtool: argv.mode === 'production' ? false : 'inline-source-map',
 
   entry: {
-    ui: './src/app/index.tsx', // The entry point for your UI code
+    ui: './src/ui/index.ts', // The entry point for your UI code
     code: './src/plugin/index.ts', // The entry point for your plugin code
   },
 
@@ -37,7 +37,7 @@ module.exports = (env, argv) => ({
   // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/app/index.html',
+      template: './src/ui/index.html',
       filename: 'ui.html',
       inlineSource: '.(js)$',
       chunks: ['ui'],

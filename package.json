@@ -34,5 +34,10 @@
 			"prettier --write",
 			"git add"
 		]
+	},
+	"dependencies": {
+		"highlight.js": "^9.15.10",
+		"lowlight": "^1.12.1",
+		"storeon": "^0.9.5"
 	}
 }
