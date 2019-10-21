@@ -1,21 +1,12 @@
 import * as createStore from 'storeon';
+import * as logger from 'storeon/devtools/logger'
+
 import syncState from '../shared/sync-state';
-import logger from '../shared/logger';
+import { selection, lang } from '../shared/state'
 
 const idInput = document.getElementById('id') as HTMLInputElement;
 const langInput = document.getElementById('lang') as HTMLInputElement;
 
-const selection = store => {
-  store.on('@init', () => ({ value: '' }));
-  store.on('set/selection', (_, { value }) => {
-    return { value };
-  });  
-};
-
-const lang = store => {
-  store.on('@init', () => ({ language: '' }))
-  store.on('set/lang', (_, language) => ( { language }))
-}
 
 const store = createStore([
   selection,
@@ -26,12 +17,12 @@ const store = createStore([
     },
     send: (arg) => parent.postMessage({ pluginMessage: arg }, '*'),
   }),
-  logger('UI:')
+  logger
 ]);
 
-store.on('@changed', ({ value, language }: any) => {
-  if (value) {
-    idInput.value = value;
+store.on('@changed', (_, { selection, language }: any) => {
+  if (selection) {
+    idInput.value = selection;
   }
 
   if (language) {
