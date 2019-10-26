@@ -1,84 +1,64 @@
-var a = [
-  {
-    type: 'element',
-    tagName: 'span',
-    properties: { className: ['keyword'] },
-    children: [{ type: 'text', value: 'var' }],
-  },
-  { type: 'text', value: ' rehype = ' },
-  {
-    type: 'element',
-    tagName: 'span',
-    properties: { className: ['built_in'] },
-    children: [{ type: 'text', value: 'require' }],
-  },
-  { type: 'text', value: '(' },
-  {
-    type: 'element',
-    tagName: 'span',
-    properties: { className: ['string'] },
-    children: [{ type: 'text', value: "'rehype'" }],
-  },
-  { type: 'text', value: ')\n' },
-  {
-    type: 'element',
-    tagName: 'span',
-    properties: { className: ['keyword'] },
-    children: [{ type: 'text', value: 'var' }],
-  },
-  { type: 'text', value: ' html = rehype()\n  .stringify({' },
-  {
-    type: 'element',
-    tagName: 'span',
-    properties: { className: ['attr'] },
-    children: [{ type: 'text', value: 'type' }],
-  },
-  { type: 'text', value: ': ' },
-  {
-    type: 'element',
-    tagName: 'span',
-    properties: { className: ['string'] },
-    children: [{ type: 'text', value: "'root'" }],
-  },
-  { type: 'text', value: ', ' },
-  {
-    type: 'element',
-    tagName: 'span',
-    properties: { className: ['attr'] },
-    children: [{ type: 'text', value: 'children' }],
-  },
-  { type: 'text', value: ': tree})\n  .toString()\n\n' },
-  {
-    type: 'element',
-    tagName: 'span',
-    properties: { className: ['built_in'] },
-    children: [{ type: 'text', value: 'console' }],
-  },
-  { type: 'text', value: '.log(html)' },
-];
+const parser = require('postcss-selector-parser');
+const postcss = require('postcss');
+const fs = require('fs');
 
-const apply = (text, start, end, name) =>
-  console.log({ text, start, end, name });
+const monokai = require.resolve('highlight.js/styles/monokai.css');
 
-const travel = (cb, nodes, index, name) => {
-  let currentIndex = index;
+console.log(monokai);
 
-  nodes.forEach(node => {
-    if (node.type === 'text') {
-      cb(
-        node.value,
-        currentIndex,
-        (currentIndex += node.value.length),
-        name
-      );
-    } else if (node.type === 'element') {
-      const newName = node.properties.className;
+fs.readFile(monokai, (err, css) => {
+  postcss([walker])
+    .process(css, { from: undefined })
+    .then(result => {
+      console.log(result.figmaRules);
+    });
+});
 
-      currentIndex = travel(cb, node.children, currentIndex, newName);
+const walker = postcss.plugin('walker', options => {
+  const findColor = nodes =>
+    nodes.reduce(
+      (color, node) =>
+        node.type === 'decl' && node.prop === 'color' ? node.value : color,
+      null
+    );
+
+  const walk = node => {
+    if (node.type === 'rule') {
+      const clr = findColor(node.nodes);
+
+      return clr ? [node.selector, clr] : [];
     }
-  });
 
-  return currentIndex;
-};
+    return [];
+  };
 
-travel(apply, a, 0, '');
+  const parseSelectors = ([selector, color]) => {
+    let tokens = [];
+    const transform = selectors => {
+      selectors.walk(selector => {
+        if (selector.type === 'class') {
+          tokens.push(selector.value);
+        }
+      });
+    };
+
+    parser(transform).processSync(selector);
+
+    return tokens.map(token => [
+      token.replace('hljs-', '').replace('hljs', 'default'),
+      color,
+    ]);
+  };
+
+  return (root, result) => {
+    const rules = root.nodes
+      .map(walk)
+      .filter(res => !!res.length)
+      .map(parseSelectors)
+      .flat();
+
+    result.figmaRules = rules;
+
+    return result;
+  };
+});
