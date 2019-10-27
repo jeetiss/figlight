@@ -159,38 +159,54 @@ const highlightStyles = [
 const pcss = postcss([walker]);
 const stylesPath = './src/styles/';
 
-highlightStyles.forEach(([name, cssFile]) => {
-  fs.readFile(require.resolve(`highlight.js/styles/${cssFile}`), (err, css) => {
-    pcss
-      .process(css, { from: undefined })
-      .then(result => {
-        const code = styleTemplate(name, result.figmaRules);
-        const file = path.join(__dirname, stylesPath, `${name}.js`);
+Promise.all(
+  highlightStyles.map(
+    ([name, cssFile]) =>
+      new Promise(resolve => {
+        fs.readFile(
+          require.resolve(`highlight.js/styles/${cssFile}`),
+          (err, css) => {
+            pcss
+              .process(css, { from: undefined })
+              .then(result => {
+                const code = styleTemplate(name, result.figmaRules);
+                const file = path.join(__dirname, stylesPath, `${name}.js`);
 
-        fs.writeFile(file, code, err => err && console.log(name, err));
+                fs.writeFile(file, code, err => resolve(err ? false : name));
+              })
+              .catch(err => resolve(false));
+          }
+        );
       })
-      .catch(err => err && console.log(name, err));
-  });
+  )
+).then(names => {
+  const code = createIndex(names.filter(name => name));
+  const file = path.join(__dirname, stylesPath, 'index.js');
+
+  fs.writeFile(file, code, err => console.log(err ? err : 'done'));
 });
 
-const styleTemplate = (name, rules) => {
-  const styleNameVar = changeCase.camelCase(name);
-  const styleDisplayNameVar = `${styleNameVar}DisplayName`;
+const createIndex = names =>
+  names
+    .map(
+      name => `import * as ${changeCase.camelCase(name)} from './${name}.js'`
+    )
+    .join('\n') +
+  `\n export { ${names.map(name => changeCase.camelCase(name)).join(', ')} }`;
 
-  return `
-    const ${styleDisplayNameVar} = '${changeCase.sentenceCase(name)}';
-  
-    const ${styleNameVar} = {
-      ${rules
-        .map(
-          ([token, color]) => `'${token}': {
-        type: 'SOLID',
-        color: ${valuesToRGB(parse(color))},
-      },`
-        )
-        .join('\n')}
-    }
-  
-    export { ${styleNameVar}, ${styleDisplayNameVar} }
-  `;
-};
+const styleTemplate = (name, rules) => `
+  const name = '${changeCase.sentenceCase(name)}';
+
+  const style = {
+    ${rules
+      .map(
+        ([token, color]) => `'${token}': {
+      type: 'SOLID',
+      color: ${valuesToRGB(parse(color))},
+    },`
+      )
+      .join('\n')}
+  }
+
+  export { style, name }
+`;
