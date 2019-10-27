@@ -8,11 +8,10 @@ import go from 'highlight.js/lib/languages/go';
 import cpp from 'highlight.js/lib/languages/cpp';
 import css from 'highlight.js/lib/languages/css';
 
+import { ast } from './ast';
+import { monokai } from '../styles/monokai';
 import syncState from '../shared/sync-state';
 import { selection, lang } from '../shared/state';
-import { ast } from './ast';
-
-import first from './style';
 
 low.registerLanguage('html, xml', xml);
 low.registerLanguage('css', css);
@@ -75,9 +74,7 @@ store.on('plugin/apply', (state: any) => {
 
   if (rules) {
     travel(rules.value, (_, start, end, styles) => {
-      console.log(_, start, end, styles);
-
-      const paints = styles.map(style => first[style]);
+      const paints = styles.map(style => monokai[style] || monokai.default);
       if (paints.every(paint => !!paint)) {
         slct.setRangeFills(start, end, paints);
       }
