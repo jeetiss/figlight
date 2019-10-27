@@ -9,9 +9,14 @@ import cpp from 'highlight.js/lib/languages/cpp';
 import css from 'highlight.js/lib/languages/css';
 
 import { ast } from './ast';
-import { monokai } from '../styles/monokai';
+import * as styles from '../styles';
 import syncState from '../shared/sync-state';
-import { selection, lang } from '../shared/state';
+import { selection, lang, theme } from '../shared/state';
+
+const themes = Object.entries(styles).map(([key, value]: any) => [
+  key,
+  value.name,
+]);
 
 low.registerLanguage('html, xml', xml);
 low.registerLanguage('css', css);
@@ -23,6 +28,7 @@ const store = createStore([
   selection,
   lang,
   ast,
+  theme,
   syncState({
     filter: type => !type.startsWith('ast'),
     subscribe: cb => {
@@ -34,6 +40,7 @@ const store = createStore([
 ]);
 
 figma.showUI(__html__);
+store.dispatch('theme/add', themes);
 
 store.on('@changed', (_, { selection }: any) => {
   if (selection === '' || selection) {
@@ -68,13 +75,17 @@ store.on('plugin/close', () => {
 });
 
 store.on('plugin/apply', (state: any) => {
+  const { theme } = store.get() as any;
   const slct = figma.currentPage.selection[0] as TextNode;
 
   const rules = state.trees[slct.id];
+  const currentTheme = styles[theme.active].style;
 
   if (rules) {
     travel(rules.value, (_, start, end, styles) => {
-      const paints = styles.map(style => monokai[style] || monokai.default);
+      const paints = styles.map(
+        style => currentTheme[style] || currentTheme.default
+      );
       if (paints.every(paint => !!paint)) {
         slct.setRangeFills(start, end, paints);
       }
