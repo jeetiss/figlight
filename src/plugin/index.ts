@@ -109,7 +109,7 @@ const travel = (nodes, cb, index = 0, name = ['default']) => {
   return currentIndex;
 };
 
-setInterval(() => {
+figma.on('selectionchange', () => {
   const { selection } = <any>store.get();
   const slct = figma.currentPage.selection;
   const newValue = slct.map(({ id }) => id).join('-');
@@ -117,4 +117,4 @@ setInterval(() => {
   if (newValue !== selection) {
     store.dispatch('selection/set', newValue);
   }
-}, 200);
+});
