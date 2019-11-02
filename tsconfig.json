@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "outDir": "dist",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "experimentalDecorators": true,
-    "removeComments": true,
-    "noImplicitAny": false,
-    "moduleResolution": "node"
-  }
+    "target": "es2015",
+    "module": "es2015",
+    
+    "allowJs": false,
+    "checkJs": false,
+    "noEmit": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    "dist"
+  ]
 }
