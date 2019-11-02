@@ -1,8 +1,8 @@
 {
-  "name": "figma-plugin-react-template",
-  "version": "1.0.0",
-  "description": "This plugin template uses Typescript. If you are familiar with Javascript, Typescript will look very familiar. In fact, valid Javascript code is already valid Typescript code.",
-  "license": "ISC",
+  "name": "figlight",
+  "version": "0.0.1",
+  "description": "Code highlighter for figma",
+  "license": "MIT",
   "scripts": {
     "build": "webpack --mode=production",
     "dev": "webpack --mode=development --watch",
