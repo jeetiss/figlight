@@ -126,7 +126,7 @@ const highlightStyles = [
   ['mono-blue', 'mono-blue.css'],
   ['monokai-sublime', 'monokai-sublime.css'],
   ['monokai', 'monokai.css'],
-  // ['night-owl', 'night-owl.css'],
+  ['night-owl', 'night-owl.css'],
   ['nord', 'nord.css'],
   ['obsidian', 'obsidian.css'],
   ['ocean', 'ocean.css'],
