@@ -1,5 +1,6 @@
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CreateFileWebpack = require('create-file-webpack');
 const path = require('path');
 
 module.exports = (env, argv) => ({
@@ -53,5 +54,17 @@ module.exports = (env, argv) => ({
       chunks: ['ui'],
     }),
     new HtmlWebpackInlineSourcePlugin(),
+    new CreateFileWebpack({
+      path: 'dist',
+      fileName: 'manifest.json',
+
+      content: JSON.stringify({
+        main: 'code.js',
+        ui: 'ui.html',
+        name: 'Figlight',
+        id: '00000000',
+        api: '1.0.0',
+      }),
+    }),
   ],
 });
