@@ -159,6 +159,10 @@ const highlightStyles = [
 const pcss = postcss([walker]);
 const stylesPath = './src/styles/';
 
+if (!fs.existsSync(stylesPath)){
+  fs.mkdirSync(stylesPath);
+}
+
 Promise.all(
   highlightStyles.map(
     ([name, cssFile]) =>
