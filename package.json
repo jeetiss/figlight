@@ -24,7 +24,7 @@
     "prettier": "1.19.1",
     "style-loader": "0.23.1",
     "ts-loader": "6.2.1",
-    "tslint": "5.20.0",
+    "tslint": "5.20.1",
     "tslint-react": "4.1.0",
     "typescript": "3.7.3",
     "url-loader": "2.2.0",
