@@ -1,7 +1,7 @@
 # The figlight logo
  
-<img src="logo_dark.png" alt="figlight" width="128" height="128">
-<img src="logo_light.png" alt="figlight" width="128" height="128">
+<img src="Logo_dark.png" alt="figlight" width="128" height="128">
+<img src="Logo_light.png" alt="figlight" width="128" height="128">
 
 ### Credits
 
