@@ -4,8 +4,8 @@ Code highlighter for figma
 
 ## The figlight logo
  
-<img src="logo/logo_dark.png" alt="figlight" width="128" height="128">
-<img src="logo/logo_light.png" alt="figlight" width="128" height="128">
+<img src="logo/Logo_dark.png" alt="figlight" width="128" height="128">
+<img src="logo/Logo_light.png" alt="figlight" width="128" height="128">
 
 ### Credits
 
