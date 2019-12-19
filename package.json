@@ -22,7 +22,7 @@
     "postcss": "7.0.25",
     "postcss-selector-parser": "6.0.2",
     "prettier": "1.19.1",
-    "style-loader": "0.23.1",
+    "style-loader": "1.0.2",
     "ts-loader": "6.2.1",
     "tslint": "5.20.1",
     "tslint-react": "4.1.0",
