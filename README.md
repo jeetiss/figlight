@@ -1,6 +1,10 @@
 # Figlight
 
+<img src="logo.svg" align="right"
+     alt="Figlight logo by Nadya Kuzmina" width="128" height="128">
+
 Code highlighter for figma
+
 
 ## Install
 
@@ -29,9 +33,9 @@ npm run dev
 
 Open the Figma Desktop, select Plugins click Create your own plugin -> Click to choose a manifest.json file and find the manifest.json file in the repository root directory.
 
-## To Do
+# Acknowledgements
 
-- [ ] ???
-
+Special thanks to [Nadya Kuzmina][kuzminadya] for creating a project logo.
 
 [figlight]: https://github.com/jeetiss/figlight/releases/download/0.0.1/figlight.zip
+[kuzminadya]: http://nadyakuzmina.com/
