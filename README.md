@@ -1,7 +1,7 @@
-# Figlight
-
 <img src="logo.svg" align="right"
      alt="Figlight logo by Nadya Kuzmina" width="128" height="128">
+
+# Figlight
 
 Code highlighter for figma
 
