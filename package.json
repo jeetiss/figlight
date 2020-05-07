@@ -23,7 +23,7 @@
     "postcss-selector-parser": "6.0.2",
     "prettier": "1.19.1",
     "style-loader": "1.1.2",
-    "ts-loader": "6.2.1",
+    "ts-loader": "6.2.2",
     "tslint": "5.20.1",
     "tslint-react": "4.1.0",
     "typescript": "3.7.4",
