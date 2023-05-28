@@ -21,7 +21,7 @@
     "lint-staged": "9.5.0",
     "postcss": "7.0.26",
     "postcss-selector-parser": "6.0.2",
-    "prettier": "1.19.1",
+    "prettier": "2.8.8",
     "style-loader": "1.1.2",
     "ts-loader": "6.2.1",
     "tslint": "5.20.1",
